@@ -21,7 +21,6 @@ This is a starter template for building a Single Page Application (SPA) using La
 - tailwindcss
 - vite
 
-```
 - Move into the _backend_ directory
 - Copy `.env.example` file to `.env`.
 - Edit the `.env` file and set your database connection details.
@@ -29,12 +28,9 @@ This is a starter template for building a Single Page Application (SPA) using La
 - Run `php artisan migrate` to create the database tables.
 - Run `php artisan jwt:secret` to generate the JWT secret key.
 - Run `php artisan serve` to start the local development server.
-```
 
-```
 - Move into the _frontend_ directory
 - Copy `.env.example` file to `.env`.
 - Edit the `.env` file.
 - Run `npm install` to install JavaScript dependencies.
 - Run `npm run dev` to compile the assets.
-```
