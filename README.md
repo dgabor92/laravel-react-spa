@@ -4,14 +4,14 @@ This is a starter template for building a Single Page Application (SPA) using La
 
 ## Installation
 
-###Backend:
+### Backend
 
 - php: 8.1
 - laravel/framwork: 10.10
 - tymon/jwt-auth
 - maatwebsite/excel
 
-###Frontend:
+### Frontend
 
 - react
 - typescript
@@ -20,6 +20,8 @@ This is a starter template for building a Single Page Application (SPA) using La
 - axios
 - tailwindcss
 - vite
+
+### Development
 
 - Move into the _backend_ directory
 - Copy `.env.example` file to `.env`.
