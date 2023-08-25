@@ -29,12 +29,6 @@ export const logIn = async (
   return response.data;
 };
 
-export const useLoginMutation = () => {
-  return useMutation((credential: { email: string; password: string }) =>
-    logIn(credential.email, credential.password)
-  );
-};
-
 export const signUp = async (
   name: string,
   email: string,

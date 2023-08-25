@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { useLoginMutation } from "../lib/api";
+import { logIn } from "../lib/api";
 import { useNavigate } from "react-router-dom";
 
 type LoginFormProps = {
@@ -10,7 +10,6 @@ type LoginFormProps = {
 
 export default function Login() {
   const navigate = useNavigate();
-  const loginMutation = useLoginMutation();
   const [form, setForm] = useState<LoginFormProps>({
     email: "",
     password: "",
@@ -18,10 +17,7 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await loginMutation.mutateAsync({
-      email: form.email,
-      password: form.password,
-    });
+    const response = await logIn(form.email, form.password);
     localStorage.setItem("token", response.token);
     navigate("/dashboard");
   };
