@@ -2,7 +2,7 @@ import Axios, { AxiosInstance } from "axios";
 import { notification } from "antd";
 import { createContext, useContext } from "react";
 
-const axios: AxiosInstance = Axios.create({
+const customAxios: AxiosInstance = Axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 1000,
   headers: {
@@ -10,7 +10,7 @@ const axios: AxiosInstance = Axios.create({
   },
 });
 
-axios.interceptors.request.use((config) => {
+customAxios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -18,7 +18,7 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-axios.interceptors.response.use(
+customAxios.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -50,7 +50,7 @@ axios.interceptors.response.use(
 );
 
 export const AxiosContext = createContext<AxiosInstance>(
-  new Proxy(axios, {
+  new Proxy(customAxios, {
     apply: () => {
       throw new Error("You must wrap you component in an AxiosProvider");
     },
@@ -64,4 +64,4 @@ export const useAxios = () => {
   return useContext(AxiosContext);
 };
 
-export default axios;
+export default customAxios;

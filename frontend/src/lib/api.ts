@@ -1,15 +1,18 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "../config/http";
+import customAxios from "../config/http";
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 export interface User {
   id: number;
   name: string;
   email: string;
-  role: number;
+  // role: number;
   email_verified_at: string | null;
   createdAt: string;
   updatedAt: string;
-  photo_url: string;
+  // photo_url: string;
 }
 
 export interface LoginResponse {
@@ -22,7 +25,7 @@ export const logIn = async (
   email: string,
   password: string
 ): Promise<LoginResponse> => {
-  const response = await axios.post("/login", {
+  const response = await axios.post(baseURL + "/login", {
     email,
     password,
   });
@@ -35,7 +38,7 @@ export const signUp = async (
   password: string,
   password_confirmation: string
 ): Promise<unknown> => {
-  const response = await axios.post("/register", {
+  const response = await axios.post(baseURL + "/register", {
     name,
     email,
     password,
@@ -48,7 +51,7 @@ export const signUp = async (
 };
 
 export const getUser = async (): Promise<User> => {
-  const response = await axios.get("/user");
+  const response = await customAxios.get("/user");
   if (response.status !== 200) {
     throw new Error("Invalid credentials");
   }
@@ -61,7 +64,7 @@ export const useGetUserQuery = () => {
 
 export const logOut = async (): Promise<void> => {
   localStorage.removeItem("token");
-  const response = await axios.post("/logout");
+  const response = await customAxios.post("/logout");
   console.log(response);
 };
 
@@ -69,7 +72,7 @@ export const changeSettings = async (
   name: string,
   email: string
 ): Promise<User> => {
-  const response = await axios.patch("/settings/profile", {
+  const response = await customAxios.patch("/settings/profile", {
     name,
     email,
   });
