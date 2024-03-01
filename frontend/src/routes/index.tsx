@@ -15,10 +15,6 @@ const routeList: RouteObject[] = [
     path: "/admin",
     element: <Login />,
   },
-  // {
-  //   path: "signup",
-  //   element: <Signup />,
-  // },
   {
     path: "/admin/dashboard",
     element: <PrivateRoute />,

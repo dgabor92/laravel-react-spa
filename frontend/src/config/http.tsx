@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 
 const customAxios: AxiosInstance = Axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  timeout: 1000,
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -27,10 +27,12 @@ customAxios.interceptors.response.use(
     if (error.response && error.response.status) {
       switch (error.response.status) {
         case 401:
-          window.location.href = "/login";
+          window.location.href = "/admin";
+          localStorage.removeItem("token");
           break;
         case 403:
-          window.location.href = "/login";
+          window.location.href = "/admin";
+          localStorage.removeItem("token");
           break;
         case 404:
           notification.error({
