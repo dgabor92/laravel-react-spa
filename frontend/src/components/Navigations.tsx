@@ -31,9 +31,9 @@ export const navigations = [
   //     href: "/admin/magyar-szurkek-utja",
   //     // icon: <img src="/logo/magyarszurkek-logo.svg" />,
   //   },
-  {
-    title: "Felhasználók",
-    href: "/admin/felhasznalok",
-    icon: <UserGroupIcon strokeWidth={1} />,
-  },
+  // {
+  //   title: "Felhasználók",
+  //   href: "/admin/felhasznalok",
+  //   icon: <UserGroupIcon strokeWidth={1} />,
+  // },
 ];
