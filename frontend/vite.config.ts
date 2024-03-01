@@ -8,5 +8,10 @@ export default defineConfig({
     open: true,
     origin: "http://127.0.0.1:8000",
   },
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
   base: "/",
 });

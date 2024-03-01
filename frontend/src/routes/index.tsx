@@ -1,8 +1,6 @@
 import { lazy, FC } from "react";
-import { useRoutes, RouteObject } from "react-router-dom";
+import { useRoutes, RouteObject, Navigate } from "react-router-dom";
 import Login from "../pages/Login";
-import Welcome from "../pages/Welcome";
-import Signup from "../pages/Signup";
 import PrivateRoute from "./PrivateRoute";
 import Settings from "../pages/Settings";
 
@@ -11,26 +9,26 @@ const NotFound = lazy(() => import("../pages/404"));
 const routeList: RouteObject[] = [
   {
     path: "/",
-    element: <Welcome />,
+    element: <Navigate to={"/admin"} />,
   },
   {
-    path: "login",
+    path: "/admin",
     element: <Login />,
   },
+  // {
+  //   path: "signup",
+  //   element: <Signup />,
+  // },
   {
-    path: "signup",
-    element: <Signup />,
-  },
-  {
-    path: "/dashboard",
+    path: "/admin/dashboard",
     element: <PrivateRoute />,
   },
   {
-    path: "/settings",
+    path: "/admin/settings",
     element: <Settings />,
   },
   {
-    path: "*",
+    path: "/admin/*",
     element: <NotFound />,
   },
 ];
