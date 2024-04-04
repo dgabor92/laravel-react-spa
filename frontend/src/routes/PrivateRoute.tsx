@@ -5,7 +5,7 @@ const PrivateRoute: FC = () => {
   return (
     <Dashboard>
       <div className="">
-        <h1 className="text-4xl font-bold">Private Route</h1>
+        {/* <h1 className="text-4xl font-bold">Private Route</h1> */}
       </div>
     </Dashboard>
   );

@@ -31,9 +31,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', [LoginController::class, 'logout']);
 
     Route::get('user', [UserController::class, 'current']);
+    Route::post('updateProfile', [UserController::class, 'updateProfile']);
+    Route::post('createUser', [UserController::class, 'createUser']);
+    Route::delete('deleteUser/{id}', [UserController::class, 'deleteUser']);
+    Route::post('updateUser/{id}', [UserController::class, 'updateUser']);
 
-    Route::patch('settings/profile', [ProfileController::class, 'update']);
-    Route::patch('settings/password', [PasswordController::class, 'update']);
+    // Route::patch('settings/profile', [ProfileController::class, 'update']);
+    // Route::patch('settings/password', [PasswordController::class, 'update']);
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
