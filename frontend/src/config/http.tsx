@@ -25,11 +25,9 @@ customAxios.interceptors.response.use(
   (error) => {
     console.log("error:", error, error.response);
     if (error.response && error.response.status) {
+      let errorMessage = error.response.data?.message || "Error";
       switch (error.response.status) {
         case 401:
-          window.location.href = "/admin";
-          localStorage.removeItem("token");
-          break;
         case 403:
           window.location.href = "/admin";
           localStorage.removeItem("token");
@@ -37,13 +35,13 @@ customAxios.interceptors.response.use(
         case 404:
           notification.error({
             message: `Error ${error.response.status}: ${error.response.statusText}`,
-            description: error.response.data?.msg || "Error",
+            description: errorMessage,
           });
           break;
         default:
           notification.error({
             message: `Error ${error.response.status}: ${error.response.statusText}`,
-            description: error.response.data?.msg || "Error",
+            description: errorMessage,
           });
       }
     }

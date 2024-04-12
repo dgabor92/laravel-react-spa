@@ -1,5 +1,6 @@
 import { getUser } from "../lib/api";
 import { DashboardProps } from "@/lib/interfaces";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/lib/interfaces";
@@ -7,6 +8,7 @@ import NewNavBar from "./NewNavBar";
 
 function Dashboard({ children }: DashboardProps) {
   const [_, setCurrentPage] = useState<string>("");
+  const navigate = useNavigate();
 
   const {
     data: user,
@@ -22,6 +24,10 @@ function Dashboard({ children }: DashboardProps) {
 
   if (isError) {
     return <div>Error</div>;
+  }
+
+  if (!user) {
+    navigate("/admin");
   }
 
   useEffect(() => {
