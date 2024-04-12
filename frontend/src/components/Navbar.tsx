@@ -89,7 +89,6 @@ function UserMenu({ user }: UserMenuProps) {
 
 export default function Navbar({ user, children }: NavbarProps) {
   const navigate = useNavigate();
-  console.log(user, "navbar children");
   const [forcedOpenNavBar, setForcedOpenNavBar] = useState(true);
   const [navBarState, setNavBarState] = useState(true);
 
