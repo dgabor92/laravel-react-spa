@@ -1,5 +1,5 @@
 import customAxios from "../config/http";
-import { LoginResponse, User } from "./interfaces";
+import { ActionLog, LoginResponse, User, UserInfo } from "./interfaces";
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -39,4 +39,20 @@ export const logOut = async (): Promise<void> => {
   localStorage.removeItem("token");
   const response = await customAxios.post("/logout");
   console.log(response);
+};
+
+export const getUsers = async (): Promise<UserInfo[]> => {
+  const response = await customAxios.get(`/getAllUsers`);
+  if (!Array.isArray(response.data)) {
+    throw new Error("Unexpected response data format");
+  }
+  return response.data;
+};
+
+export const getLogs = async (): Promise<ActionLog[]> => {
+  const response = await customAxios.get(`/getAllLogs`);
+  if (!Array.isArray(response.data)) {
+    throw new Error("Unexpected response data format");
+  }
+  return response.data;
 };

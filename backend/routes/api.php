@@ -35,6 +35,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('createUser', [UserController::class, 'createUser']);
     Route::delete('deleteUser/{id}', [UserController::class, 'deleteUser']);
     Route::post('updateUser/{id}', [UserController::class, 'updateUser']);
+    Route::get('getAllUsers', [UserController::class, 'getAllUsers']);
+    Route::get('getAllLogs', [UserController::class, 'getAllLogs']);
 
     // Route::patch('settings/profile', [ProfileController::class, 'update']);
     // Route::patch('settings/password', [PasswordController::class, 'update']);

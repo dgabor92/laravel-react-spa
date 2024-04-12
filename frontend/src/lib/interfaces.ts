@@ -27,3 +27,18 @@ export interface LoginResponse {
 export interface NavbarProps {
   user: User;
 }
+
+export type UserInfo = {
+  id?: number;
+  name: string;
+  email: string;
+  role: string;
+  password: string;
+};
+
+export type ActionLog = {
+  username: string;
+  action: string;
+  description: string;
+  created_at: string;
+};

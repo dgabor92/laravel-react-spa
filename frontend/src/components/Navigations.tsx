@@ -4,36 +4,13 @@ export const navigations = [
   {
     title: "Főoldal",
     href: "/admin/dashboard",
-    icon: <HomeIcon strokeWidth={1} />,
+    icon: <HomeIcon strokeWidth={1} width={30} height={30} />,
+    current: true,
   },
-  //   {
-  //     title: "Étterem",
-  //     href: "/admin/etterem",
-  //     // icon: <img src="/logo/etterem-logo.svg" />,
-  //   },
-  //   {
-  //     title: "Ifjúsági szálló",
-  //     href: "/admin/ifjusagi-szallo",
-  //     // icon: <img src="/logo/ifjusagiszallo-logo.png" />,
-  //   },
-  //   {
-  //     title: "Szabadidőközpont",
-  //     href: "/admin/szabadidokozpont",
-  //     // icon: <img src="/logo/szabadidokozpont-logo.png" />,
-  //   },
-  //   {
-  //     title: "Látogatóközpont",
-  //     href: "/admin/latogatokozpont",
-  //     // icon: <img src="/logo/latogatokozpont-logo.svg" />,
-  //   },
-  //   {
-  //     title: "Magyar szürkék útja",
-  //     href: "/admin/magyar-szurkek-utja",
-  //     // icon: <img src="/logo/magyarszurkek-logo.svg" />,
-  //   },
-  // {
-  //   title: "Felhasználók",
-  //   href: "/admin/felhasznalok",
-  //   icon: <UserGroupIcon strokeWidth={1} />,
-  // },
+  {
+    title: "Felhasználók",
+    href: "/admin/users",
+    icon: <UserGroupIcon strokeWidth={1} width={30} height={30} />,
+    current: false,
+  },
 ];

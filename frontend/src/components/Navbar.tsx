@@ -1,17 +1,13 @@
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { User, logOut } from "../lib/api";
+import React, { Fragment, useEffect } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import { logOut } from "../lib/api";
 import { useNavigate } from "react-router-dom";
 import { useMutation, QueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", current: true },
-  // { name: "Team", href: "#", current: false },
-  // { name: "Projects", href: "#", current: false },
-  // { name: "Calendar", href: "#", current: false },
-];
+import { useState } from "react";
+import { navigations as navigation } from "./Navigations";
+import { User } from "../lib/interfaces";
 
 const queryClient = new QueryClient();
 
@@ -20,141 +16,164 @@ function classNames(...classes: string[]) {
 }
 interface NavbarProps {
   user: User;
+  children: React.ReactNode;
 }
 
-export default function Navbar({ user }: NavbarProps) {
+interface UserMenuProps {
+  user: User;
+}
+
+function UserMenu({ user }: UserMenuProps) {
   const navigate = useNavigate();
   const logOutMutation = useMutation<void, AxiosResponse<unknown>>(logOut, {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      navigate("/login");
+      navigate("/admin");
     },
   });
 
   return (
-    <Disclosure as="nav" className="bg-purple-800">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        onClick={() => navigate(item.href)}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white cursor-pointer",
-                          "rounded-md px-3 py-2 text-sm font-medium cursor-pointer"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src={user?.photo_url}
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            onClick={() => navigate("/settings")}
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            onClick={() => logOutMutation.mutate()}
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
-            </div>
-          </div>
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
+    <div className="fixed right-0 sm:m-2 mr-2 mt-1 z-50">
+      <Menu as="div" className="relative ml-3">
+        <div>
+          <Menu.Button className="relative flex rounded-full bg-black/70 text-sm focus:outline-none">
+            <span className="absolute -inset-1.5" />
+            <span className="sr-only">Open user menu</span>
+            <span className="h-12 w-12 rounded-full text-white flex items-center justify-center">
+              {user.name.substring(0, 2).toUpperCase()}
+            </span>
+          </Menu.Button>
+        </div>
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer">
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  onClick={() => navigate("/admin/settings")}
                   className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    active ? "bg-gray-100" : "",
+                    "block px-4 py-2 text-sm text-gray-700"
                   )}
-                  aria-current={item.current ? "page" : undefined}
                 >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+                  Settings
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  onClick={() => logOutMutation.mutate()}
+                  className={classNames(
+                    active ? "bg-gray-100" : "",
+                    "block px-4 py-2 text-sm text-gray-700"
+                  )}
+                >
+                  Sign out
+                </a>
+              )}
+            </Menu.Item>
+          </Menu.Items>
+        </Transition>
+      </Menu>
+    </div>
+  );
+}
+
+export default function Navbar({ user, children }: NavbarProps) {
+  const navigate = useNavigate();
+  console.log(user, "navbar children");
+  const [forcedOpenNavBar, setForcedOpenNavBar] = useState(true);
+  const [navBarState, setNavBarState] = useState(true);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (screen.width < 640) {
+        setForcedOpenNavBar(false);
+        setNavBarState(false);
+      }
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  function forceToggleNavBar() {
+    setForcedOpenNavBar(!forcedOpenNavBar);
+    setNavBarState(!forcedOpenNavBar);
+  }
+
+  function closeNavBar() {
+    if (!forcedOpenNavBar) {
+      setNavBarState(false);
+    }
+  }
+
+  function openNavBar() {
+    setNavBarState(true);
+  }
+
+  return (
+    <div>
+      <UserMenu user={user}></UserMenu>
+      <div
+        onMouseEnter={openNavBar}
+        onMouseLeave={closeNavBar}
+        className={` z-10 transition-[width] fixed sm:h-screen sm:w-16 w-screen sm:bg-black ${
+          navBarState ? "sm:!w-72 h-16" : ""
+        }`}
+      >
+        <div className="">
+          <Bars3Icon
+            onClick={forceToggleNavBar}
+            className={`block h-12 w-12 text-gray-400 m-1 mb-0 cursor-pointer`}
+            aria-hidden="true"
+          />
+        </div>
+        <div
+          className={`${navBarState ? "bg-black/70" : "hidden sm:block"} pt-2`}
+        >
+          {navigation.map((item, index) => (
+            <div
+              onClick={() => {
+                navigation.forEach((dest) => (dest.current = false));
+                item.current = true;
+                navigate(item.href);
+              }}
+              key={index}
+              className={`whitespace-nowrap hover:bg-gray-700/70 hover:text-white p-2 m-2.5 mt-0 rounded-lg cursor-pointer ${
+                item.current ? "bg-gray-700/70 text-white" : "text-gray-400"
+              }`}
+            >
+              {/* <span className={`inline-block align-middle`}>{item.icon}</span> */}
+              <span className={`inline-block align-middle`}>{item.icon}</span>
+              <span
+                className={`inline-block align-middle pl-2 ${
+                  navBarState ? null : "hidden"
+                }`}
+              >
+                {item.title}
+              </span>
             </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+          ))}
+        </div>
+      </div>
+      <div
+        className={`transition-[margin] pt-16 sm:pt-0 ${
+          navBarState ? "sm:ml-72" : "sm:ml-16"
+        }`}
+      >
+        {children}
+      </div>
+    </div>
   );
 }

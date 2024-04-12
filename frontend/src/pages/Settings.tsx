@@ -1,12 +1,12 @@
+import Dashboard from "../components/Dashboard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Dashboard from "@/components/Dashboard";
-import { useState } from "react";
-import { changeSettings, getUser } from "@/lib/api";
-import Header from "@/components/Header";
+import { changeSettings, getUser } from "../lib/api";
 import { notification } from "antd";
+import { useState } from "react";
 
 function Settings() {
   const queryClient = useQueryClient();
+
   const {
     data: user,
     isLoading,
@@ -36,22 +36,23 @@ function Settings() {
   const handleCancel = () => setSettingForm(initialValues);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log(settingForm, "settingForm");
     try {
-      await changeSettingMutation.mutateAsync(settingForm);
+      await changeSettingMutation.mutateAsync({
+        name: settingForm.name,
+        email: settingForm.email,
+      });
       notification.success({
         message: "Sikeres mentés",
-        description: "A profilja sikeresen firssült!",
+        description: "A beállítások sikeresen mentve",
       });
     } catch (error) {
       console.log(error, "error");
       notification.error({
         message: "Hiba",
-        description: "A profilt nem sikerült frissíteni!",
+        description: "A beállítások mentése sikertelen",
       });
     }
-
-    changeSettingMutation.mutate(settingForm);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -59,28 +60,24 @@ function Settings() {
 
   return (
     <Dashboard>
-      <Header text="Felhasználói profil" />
-      <form
-        onSubmit={handleSubmit}
-        className="mx-auto max-w-7xl py-6 sm:px-6  lg:px-8"
-      >
+      <form onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Profil adatok
-            </h2>
+            <h1 className="text-base font-semibold leading-7 text-gray-900">
+              Profile
+            </h1>
             {/* <p className="mt-1 text-sm leading-6 text-gray-600">
               This information will be displayed publicly so be careful what you
               share.
             </p> */}
 
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label
                   htmlFor="username"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  felhasználó név
+                  Username
                 </label>
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -104,7 +101,7 @@ function Settings() {
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  e-mail cím
+                  Email
                 </label>
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -128,7 +125,6 @@ function Settings() {
             </div>
           </div>
         </div>
-
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="button"
